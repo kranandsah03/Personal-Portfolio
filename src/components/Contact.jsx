@@ -29,12 +29,13 @@ export default function Contact() {
       return;
     }
 
-    // Compose mailto link with encoded parameters
+    // Open Gmail compose so the message does not use the OS default mail app.
     const subject = encodeURIComponent(`Portfolio Message from ${formData.name}`);
     const body = encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
     );
-    window.location.href = `mailto:${personalInfo.contact.email}?subject=${subject}&body=${body}`;
+    const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(personalInfo.contact.email)}&su=${subject}&body=${body}`;
+    window.open(gmailComposeUrl, '_blank', 'noopener,noreferrer');
 
     setFormStatus({ submitted: true, error: '' });
   };
@@ -196,7 +197,7 @@ export default function Contact() {
                 <span>Send a Message</span>
               </div>
               <p className="text-xs sm:text-sm text-gray-400 mb-6 font-mono">
-                Direct transmission via email client
+                Direct transmission via Gmail
               </p>
 
               {formStatus.submitted ? (
@@ -208,7 +209,7 @@ export default function Contact() {
                     Ready to Send!
                   </h4>
                   <p className="text-sm text-gray-300">
-                    Your default mail client was prompted with your message pre-filled. If it didn't open automatically, you can email me directly at{' '}
+                    Gmail was opened with your message pre-filled. If it didn't open automatically, you can email me directly at{' '}
                     <span className="text-accent font-mono">{personalInfo.contact.email}</span>.
                   </p>
                   <button
