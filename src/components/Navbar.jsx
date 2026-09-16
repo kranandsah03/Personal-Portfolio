@@ -28,8 +28,10 @@ export default function Navbar() {
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
+
         if (section) {
           const top = section.offsetTop;
+
           if (scrollPosition >= top) {
             setActiveSection(sections[i]);
             break;
@@ -39,16 +41,29 @@ export default function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Run once when page loads
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
+  // Handle navigation click
   const handleNavClick = (e, href) => {
     e.preventDefault();
+
+    // Close mobile menu
     setMobileMenuOpen(false);
+
     const target = document.querySelector(href);
+
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   };
 
@@ -61,52 +76,83 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <div className="flex items-center justify-between">
-          {/* Brand Logo */}
+
+          {/* =========================================
+              BRAND LOGO
+              ========================================= */}
           <a
             href="#home"
             onClick={(e) => handleNavClick(e, '#home')}
             className="group flex items-center gap-2 text-base sm:text-lg font-bold text-white tracking-tight"
             aria-label="Anand Kumar Portfolio Home"
           >
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-tr from-accent/30 to-accent/10 border border-accent/40 flex items-center justify-center text-accent text-sm font-mono font-semibold transition-transform group-hover:scale-105">
+            <span
+              className="w-8 h-8 rounded-lg bg-gradient-to-tr from-accent/30 to-accent/10 border border-accent/40 flex items-center justify-center text-accent text-sm font-mono font-semibold transition-transform group-hover:scale-105"
+            >
               AK
             </span>
+
             <span className="group-hover:text-accent transition-colors">
               Anand Kumar
             </span>
           </a>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 bg-dark-900/60 p-1.5 rounded-full border border-white/[0.06] backdrop-blur-md">
+
+          {/* =========================================
+              DESKTOP NAVIGATION
+              ========================================= */}
+          <nav
+            className="nav-container hidden lg:flex items-center gap-1 bg-dark-900/60 p-1.5 rounded-full border border-white/[0.06] backdrop-blur-md"
+          >
             {navLinks.map((link) => {
-              const isActive = activeSection === link.href.substring(1);
+
+              const isActive =
+                activeSection === link.href.substring(1);
+
               return (
                 <a
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`relative px-3.5 py-1.5 text-xs font-medium rounded-full transition-all duration-200 ${
+                  className={`nav-link relative px-3.5 py-1.5 text-xs font-medium rounded-full transition-all duration-200 ${
                     isActive
                       ? 'text-white'
                       : 'text-gray-400 hover:text-gray-200'
                   }`}
                 >
+
+                  {/* Active Section Indicator */}
                   {isActive && (
                     <motion.span
                       layoutId="activeNavIndicator"
-                      className="absolute inset-0 bg-white/10 rounded-full border border-white/15 shadow-sm"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      className="active-nav-indicator absolute inset-0 bg-white/10 rounded-full border border-white/15 shadow-sm pointer-events-none"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 380,
+                        damping: 30,
+                      }}
                     />
                   )}
-                  <span className="relative z-10">{link.name}</span>
+
+                  {/* Navigation Text */}
+                  <span className="relative z-10">
+                    {link.name}
+                  </span>
+
                 </a>
               );
             })}
           </nav>
 
-          {/* Right Action Icons & Resume */}
+
+          {/* =========================================
+              RIGHT ACTION ICONS & RESUME
+              ========================================= */}
           <div className="hidden sm:flex items-center gap-3">
+
+            {/* GitHub */}
             <a
               href={personalInfo.contact.github}
               target="_blank"
@@ -116,6 +162,9 @@ export default function Navbar() {
             >
               <Github size={18} />
             </a>
+
+
+            {/* LinkedIn */}
             <a
               href={personalInfo.contact.linkedin}
               target="_blank"
@@ -125,6 +174,9 @@ export default function Navbar() {
             >
               <Linkedin size={18} />
             </a>
+
+
+            {/* Resume */}
             <a
               href={personalInfo.contact.resumeUrl}
               download="Anand-Kumar-Resume.pdf"
@@ -133,10 +185,16 @@ export default function Navbar() {
               <FileDown size={14} />
               <span>Resume</span>
             </a>
+
           </div>
 
-          {/* Mobile Hamburger Toggle */}
+
+          {/* =========================================
+              MOBILE HAMBURGER
+              ========================================= */}
           <div className="flex sm:hidden items-center gap-2">
+
+            {/* Mobile Resume */}
             <a
               href={personalInfo.contact.resumeUrl}
               download="Anand-Kumar-Resume.pdf"
@@ -145,35 +203,71 @@ export default function Navbar() {
             >
               <FileDown size={16} />
             </a>
+
+
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-gray-300 hover:text-white rounded-lg border border-white/10 hover:bg-white/5 transition-colors"
-              aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+              aria-label={
+                mobileMenuOpen
+                  ? 'Close Menu'
+                  : 'Open Menu'
+              }
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? (
+                <X size={20} />
+              ) : (
+                <Menu size={20} />
+              )}
             </button>
+
           </div>
+
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+
+      {/* =========================================
+          MOBILE DRAWER MENU
+          ========================================= */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            initial={{
+              opacity: 0,
+              height: 0,
+            }}
+            animate={{
+              opacity: 1,
+              height: 'auto',
+            }}
+            exit={{
+              opacity: 0,
+              height: 0,
+            }}
+            transition={{
+              duration: 0.25,
+              ease: 'easeInOut',
+            }}
             className="sm:hidden bg-dark-900/95 backdrop-blur-xl border-b border-white/10 overflow-hidden"
           >
+
             <div className="px-5 pt-3 pb-6 space-y-1">
+
+              {/* Mobile Navigation Links */}
               {navLinks.map((link) => {
-                const isActive = activeSection === link.href.substring(1);
+
+                const isActive =
+                  activeSection === link.href.substring(1);
+
                 return (
                   <a
                     key={link.name}
                     href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
+                    onClick={(e) =>
+                      handleNavClick(e, link.href)
+                    }
                     className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                       isActive
                         ? 'bg-accent/15 text-accent border border-accent/20'
@@ -185,8 +279,14 @@ export default function Navbar() {
                 );
               })}
 
+
+              {/* Mobile Bottom Actions */}
               <div className="pt-4 mt-2 border-t border-white/10 flex items-center justify-between">
+
+                {/* Social Icons */}
                 <div className="flex items-center gap-3">
+
+                  {/* GitHub */}
                   <a
                     href={personalInfo.contact.github}
                     target="_blank"
@@ -196,6 +296,9 @@ export default function Navbar() {
                   >
                     <Github size={18} />
                   </a>
+
+
+                  {/* LinkedIn */}
                   <a
                     href={personalInfo.contact.linkedin}
                     target="_blank"
@@ -205,7 +308,11 @@ export default function Navbar() {
                   >
                     <Linkedin size={18} />
                   </a>
+
                 </div>
+
+
+                {/* Download Resume */}
                 <a
                   href={personalInfo.contact.resumeUrl}
                   download="Anand-Kumar-Resume.pdf"
@@ -214,11 +321,15 @@ export default function Navbar() {
                   <FileDown size={14} />
                   <span>Download Resume</span>
                 </a>
+
               </div>
+
             </div>
+
           </motion.div>
         )}
       </AnimatePresence>
+
     </header>
   );
 }

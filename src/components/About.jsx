@@ -1,9 +1,70 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Layers, Database, Code2, Cpu, CheckCircle2 } from 'lucide-react';
 import { personalInfo } from '../data/portfolio';
 
+const bioParagraphs = personalInfo.aboutText.slice(0, 3);
+
 export default function About() {
+  const bioRef = useRef(null);
+  const [typedParagraphs, setTypedParagraphs] = useState(() => bioParagraphs.map(() => ''));
+  const [activeParagraph, setActiveParagraph] = useState(-1);
+
+  useEffect(() => {
+    let timerId;
+    let hasStarted = false;
+
+    const startTyping = () => {
+      if (hasStarted) return;
+      hasStarted = true;
+      let paragraphIndex = 0;
+      let characterIndex = 0;
+
+      const typeNextCharacter = () => {
+        if (paragraphIndex >= bioParagraphs.length) {
+          setActiveParagraph(-1);
+          return;
+        }
+
+        const paragraph = bioParagraphs[paragraphIndex];
+        characterIndex = Math.min(characterIndex + 3, paragraph.length);
+
+        setTypedParagraphs((current) => {
+          const next = [...current];
+          next[paragraphIndex] = paragraph.slice(0, characterIndex);
+          return next;
+        });
+
+        if (characterIndex < paragraph.length) {
+          timerId = setTimeout(typeNextCharacter, 10);
+          return;
+        }
+
+        paragraphIndex += 1;
+        characterIndex = 0;
+        setActiveParagraph(paragraphIndex);
+        timerId = setTimeout(typeNextCharacter, 100);
+      };
+
+      setActiveParagraph(0);
+      typeNextCharacter();
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) startTyping();
+      },
+      { threshold: 0.2 }
+    );
+
+    if (bioRef.current) observer.observe(bioRef.current);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timerId);
+    };
+  }, []);
+
   const specs = [
     {
       label: "Education",
@@ -64,6 +125,7 @@ export default function About() {
           
           {/* Left Column: Narrative */}
           <motion.div
+            ref={bioRef}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -71,13 +133,13 @@ export default function About() {
             className="lg:col-span-7 space-y-5 text-gray-300 text-base sm:text-lg leading-relaxed"
           >
             <p className="text-white font-medium text-lg sm:text-xl leading-relaxed">
-              {personalInfo.aboutText[0]}
+              {typedParagraphs[0]}{activeParagraph === 0 && '|'}
             </p>
             <p className="text-gray-400">
-              {personalInfo.aboutText[1]}
+              {typedParagraphs[1]}{activeParagraph === 1 && '|'}
             </p>
             <p className="text-gray-400">
-              {personalInfo.aboutText[2]}
+              {typedParagraphs[2]}{activeParagraph === 2 && '|'}
             </p>
 
             {/* Core Values Bullet List */}

@@ -12,7 +12,6 @@ import Terminal from './components/Terminal';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import CustomCursor from './components/CustomCursor';
 
 export default function App() {
   return (
@@ -24,7 +23,6 @@ export default function App() {
       </div>
 
       {/* Components */}
-      <CustomCursor />
       <Navbar />
 
       <main className="relative z-10">

@@ -3,6 +3,30 @@ import { motion } from 'framer-motion';
 import { ArrowDownRight, FileDown, Github, Linkedin, Mail, Check, Copy, Terminal as TerminalIcon } from 'lucide-react';
 import { personalInfo } from '../data/portfolio';
 
+const floatingIconTypes = [
+  { slug: 'react', count: 4 },
+  { slug: 'html5', count: 4 },
+  { slug: 'css3', count: 4 },
+  { slug: 'javascript', count: 4 },
+  { slug: 'mongodb', count: 10 },
+];
+
+const floatingIcons = floatingIconTypes.flatMap(({ slug, count }) =>
+  Array.from({ length: count }, (_, index) => ({
+    id: `${slug}-${index}`,
+    src: `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${slug}/${slug}-original.svg`,
+  }))
+);
+
+const getFloatingIconStyle = () => ({
+  '--icon-left': `${Math.random() * 100}%`,
+  '--icon-top': `${Math.random() * 100}%`,
+  '--icon-size': `${30 + Math.random() * 20}px`,
+  '--float-x': `${(Math.random() < 0.5 ? -1 : 1) * (300 + Math.random() * 300)}px`,
+  '--float-y': `${(Math.random() < 0.5 ? -1 : 1) * (300 + Math.random() * 300)}px`,
+  '--float-duration': `${6 + Math.random() * 6}s`,
+});
+
 export default function Hero() {
   const [copiedCode, setCopiedCode] = useState(false);
 
@@ -31,6 +55,17 @@ export default function Hero() {
       className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-16 overflow-hidden"
     >
       {/* Background Decorative Accents */}
+      <div id="floating-icons-bg" aria-hidden="true">
+        {floatingIcons.map((icon) => (
+          <img
+            key={icon.id}
+            src={icon.src}
+            alt=""
+            className="floating-tech-icon"
+            style={getFloatingIconStyle()}
+          />
+        ))}
+      </div>
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.6] pointer-events-none" />
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[320px] bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute -bottom-10 right-10 w-72 h-72 bg-accent-indigo/10 rounded-full blur-[100px] pointer-events-none" />
@@ -43,7 +78,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 space-y-6"
+            className="lg:col-span-7 space-y-6 animate-slideInLeft"
           >
             {/* Eyebrow badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/25 text-accent text-xs font-mono font-medium tracking-wide">

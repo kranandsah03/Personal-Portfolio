@@ -77,7 +77,7 @@ export default function Skills() {
         </div>
 
         {/* Skills Cards Grid */}
-        <div className="space-y-8">
+        <div className="space-y-8 overflow-visible">
           {getFilteredCategories().map((catGroup, idx) => {
             const GroupIcon = catGroup.icon;
             return (
@@ -87,7 +87,7 @@ export default function Skills() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
-                className="glass-card rounded-2xl p-6 border border-white/[0.07] relative overflow-hidden"
+                className="glass-card rounded-2xl p-6 border border-white/[0.07] relative overflow-visible"
               >
                 {/* Category Header */}
                 <div className="flex items-center gap-2.5 mb-5 pb-3 border-b border-white/[0.06]">
@@ -103,11 +103,11 @@ export default function Skills() {
                 </div>
 
                 {/* Badges Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 overflow-visible">
                   {catGroup.list.map((skill) => (
                     <div
                       key={skill.name}
-                      className="group relative flex flex-col p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:border-accent/30 hover:bg-white/[0.04] transition-all duration-200"
+                      className="group relative flex flex-col p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] transition-[transform,box-shadow,border-color] duration-200 hover:scale-[1.06] hover:-translate-y-1 hover:border-[rgba(0,191,255,0.6)] hover:shadow-[0_10px_20px_-5px_rgba(0,191,255,0.5)] hover:z-10"
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-mono text-gray-500 group-hover:text-accent transition-colors">

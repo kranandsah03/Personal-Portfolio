@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Navigation hover states */
+.nav-link {
+  color: rgb(156, 163, 175);
+  text-decoration: none;
+  cursor: default;
+}
+
+.nav-container:hover .nav-link {
+  opacity: 0.6;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-container .nav-link:hover {
+  opacity: 1 !important;
+  color: #000000 !important;
+  background-color: #0ea5e9 !important;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -69,5 +90,33 @@
   /* Subtle accent glow */
   .accent-glow {
     box-shadow: 0 0 25px -4px rgba(56, 189, 248, 0.25);
+  }
+
+  #floating-icons-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .floating-tech-icon {
+    position: absolute;
+    left: var(--icon-left);
+    top: var(--icon-top);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    opacity: 0.1;
+    animation: float-spread var(--float-duration) ease-in-out infinite alternate;
+  }
+
+  @keyframes float-spread {
+    from {
+      transform: translate(0, 0) rotate(0deg);
+    }
+
+    to {
+      transform: translate(var(--float-x), var(--float-y)) rotate(360deg);
+    }
   }
 }
