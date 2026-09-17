@@ -40,6 +40,7 @@ export const personalInfo = {
 export const skillsData = {
   languages: [
     { name: "C++", category: "Languages" },
+    { name: "Python", category: "Languages" },
     { name: "JavaScript (ES6+)", category: "Languages" },
     { name: "HTML5", category: "Languages" },
     { name: "CSS3", category: "Languages" }

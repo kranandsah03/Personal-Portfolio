@@ -210,7 +210,7 @@ export default function ProjectCard({ project, onOpenDetails }) {
     <div
       className={`glass-card rounded-2xl overflow-hidden border transition-all duration-300 flex flex-col ${
         project.isFlagship
-          ? 'lg:col-span-2 border-accent/25 hover:border-accent/50 shadow-lg shadow-black/40'
+          ? 'border-accent/25 hover:border-accent/50 shadow-lg shadow-black/40'
           : 'border-white/[0.08] hover:border-white/20'
       }`}
     >

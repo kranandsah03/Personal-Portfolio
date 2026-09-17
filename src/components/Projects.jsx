@@ -29,7 +29,7 @@ export default function Projects() {
         </div>
 
         {/* Project Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {/* Flagship TaskFlow Card */}
           {flagshipProject && (
             <motion.div
@@ -37,7 +37,6 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="lg:col-span-2"
             >
               <ProjectCard
                 project={flagshipProject}
